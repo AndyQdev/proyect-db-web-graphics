@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',// Puedes especificar tu origen aquí o usar '*' para todos
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Si necesitas enviar cookies o autenticación
+    credentials: false, // Si necesitas enviar cookies o autenticación
   });
   app.setGlobalPrefix('api');  // Añade un prefijo global para las rutas
   await app.listen(3000);
