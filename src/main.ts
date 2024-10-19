@@ -7,7 +7,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5174',
-      'https://frontend-web-graphics-qy9dv5d5g-jose-andres-projects-d1ccbaf3.vercel.app'
+      'http://localhost:5173',
+      'https://vercel.live/link/frontend-web-graphics.vercel.app?via=project-dashboard-alias-list&p=1'
     ], // Puedes especificar tu origen aquí o usar '*' para todos
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Si necesitas enviar cookies o autenticación
