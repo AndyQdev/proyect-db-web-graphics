@@ -147,4 +147,59 @@ export class EstadisticasAcademicasService {
   //     .andWhere('facultad.nombre_facultad = :facultad', { facultad })  // Filtramos por el nombre de la facultad
   //     .getMany();  // Devuelve todas las coincidencias encontradas
   // }
-}
+  async filterEstadisticasAcademicas(
+    localidad: string,
+    facultad: string,
+    periodo: string
+  ): Promise<any[]> {
+    const query = this.estadisticasAcademicasRepository
+      .createQueryBuilder('estadisticas')
+      .innerJoinAndSelect('estadisticas.id_carrera', 'carrera')
+      .innerJoinAndSelect('carrera.id_facultad', 'facultad')
+      .leftJoinAndSelect('carrera.rendimientoAcademico', 'rendimiento')
+      .select([
+        'estadisticas.id_estadistica AS id_estadistica',
+        'estadisticas.periodo AS periodo',
+        'estadisticas.localidad AS localidad',
+        'estadisticas.modalidad AS modalidad',
+        'estadisticas.t_ins AS t_ins',
+        'estadisticas.t_nue AS t_nue',
+        'estadisticas.t_ant AS t_ant',
+        'estadisticas.mat_ins AS mat_ins',
+        'estadisticas.sin_not AS sin_not',
+        'estadisticas.moras AS moras',
+        'estadisticas.porcentaje_mora AS porcentaje_mora',
+        'estadisticas.retirados AS retirados',
+        'estadisticas.egresados AS egresados',
+        'estadisticas.titulados AS titulados',
+        'carrera.id_carrera AS id_carrera',
+        'carrera.nombre_carrera AS nombre_carrera',
+        'facultad.id_facultad AS id_facultad',
+        'facultad.nombre_facultad AS nombre_facultad',
+        'rendimiento.ppa AS ppa',
+        'rendimiento.pps AS pps',
+        'rendimiento.ppa1 AS ppa1',
+        'rendimiento.ppac AS ppac'
+      ]);
+  
+    // Aplicar filtros solo si el valor no es "Todas"
+    if (localidad !== 'Todas') {
+      query.andWhere('estadisticas.localidad = :localidad', { localidad });
+    }
+  
+    if (facultad !== 'Todas') {
+      query.andWhere('facultad.nombre_facultad = :facultad', { facultad });
+    }
+  
+    if (periodo !== 'Todas') {
+      query.andWhere('estadisticas.periodo = :periodo', { periodo });
+    }
+  
+    // Agrupar por los campos seleccionados para evitar duplicados
+    query.groupBy(
+      'estadisticas.id_estadistica, estadisticas.periodo, estadisticas.localidad, estadisticas.modalidad, estadisticas.t_ins, estadisticas.t_nue, estadisticas.t_ant, estadisticas.mat_ins, estadisticas.sin_not, estadisticas.moras, estadisticas.porcentaje_mora, estadisticas.retirados, estadisticas.egresados, estadisticas.titulados, carrera.id_carrera, carrera.nombre_carrera, facultad.id_facultad, facultad.nombre_facultad, rendimiento.ppa, rendimiento.pps, rendimiento.ppa1, rendimiento.ppac'
+    );
+  
+    return query.getRawMany();
+  }
+}  

@@ -45,4 +45,12 @@ export class EstadisticasAcademicasController {
   ): Promise<EstadisticasAcademicas[]> {
     return this.estadisticasAcademicasService.filterEstadisticas(periodo, localidad, facultad, modalidad);
   }
+  @Get('filter2')
+  filterEstadisticas(
+    @Query('localidad') localidad: string,
+    @Query('facultad') facultad: string,
+    @Query('periodo') periodo: string
+  ): Promise<any[]> {
+    return this.estadisticasAcademicasService.filterEstadisticasAcademicas(localidad, facultad, periodo);
+  }
 }

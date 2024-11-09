@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Facultades } from './facultades.entity';
+import { RendimientoAcademico } from './rendimiento_academico.entity';
 
 @Entity()
 export class Carreras {
@@ -12,4 +13,7 @@ export class Carreras {
   @ManyToOne(() => Facultades)
   @JoinColumn({ name: 'id_facultad' })
   id_facultad: Facultades;
+
+  @OneToMany(() => RendimientoAcademico, (rendimiento) => rendimiento.id_carrera)
+  rendimientoAcademico: RendimientoAcademico[];
 }

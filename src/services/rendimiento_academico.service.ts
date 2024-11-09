@@ -35,4 +35,5 @@ export class RendimientoAcademicoService {
   async delete(id: string): Promise<void> {
     await this.rendimientoAcademicoRepository.delete(id);
   }
+  
 }
