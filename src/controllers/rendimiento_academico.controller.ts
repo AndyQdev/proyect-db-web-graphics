@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 import { RendimientoAcademicoService } from 'src/services/rendimiento_academico.service';
 import { RendimientoAcademico } from 'src/entitys/rendimiento_academico.entity';
 
@@ -12,11 +12,11 @@ export class RendimientoAcademicoController {
     return this.rendimientoAcademicoService.findAll();
   }
 
-  // Obtener un rendimiento académico por ID
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<RendimientoAcademico> {
-    return this.rendimientoAcademicoService.findOne(id);
-  }
+  // // Obtener un rendimiento académico por ID
+  // @Get(':id')
+  // findOne(@Param('id') id: string): Promise<RendimientoAcademico> {
+  //   return this.rendimientoAcademicoService.findOne(id);
+  // }
 
   // Crear un nuevo rendimiento académico
   @Post()
@@ -34,5 +34,15 @@ export class RendimientoAcademicoController {
   @Delete(':id')
   delete(@Param('id') id: string): Promise<void> {
     return this.rendimientoAcademicoService.delete(id);
+  }
+  @Get('filter')
+  filterRendimientoAcademico(
+    @Query('localidad') localidad: string,
+    @Query('facultad') facultad: string,
+    @Query('periodo') periodo: string,
+    @Query('modalidad') modalidad: string,
+  ): Promise<RendimientoAcademico[]> {
+    console.log('Hola desde el controlador', periodo, localidad)
+    return this.rendimientoAcademicoService.filterRendimientoAcademico(localidad, facultad, periodo, modalidad);
   }
 }

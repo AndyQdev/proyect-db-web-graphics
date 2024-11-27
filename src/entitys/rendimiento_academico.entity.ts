@@ -6,6 +6,15 @@ export class RendimientoAcademico {
   @PrimaryGeneratedColumn('uuid')
   id_rendimiento: string;
 
+  @Column({ type: 'nvarchar', length: 255 })
+  periodo: string;
+
+  @Column({ type: 'nvarchar', length: 255 })
+  localidad: string;
+
+  @Column({ type: 'nvarchar', length: 255 })
+  modalidad: string;
+
   @Column('float')
   ppa: number;
 

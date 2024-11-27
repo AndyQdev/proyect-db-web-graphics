@@ -36,4 +36,48 @@ export class RendimientoAcademicoService {
     await this.rendimientoAcademicoRepository.delete(id);
   }
   
+  async filterRendimientoAcademico(
+    localidad: string,
+    facultad: string,
+    periodo: string,
+    modalidad: string
+  ): Promise<any[]> {
+    const query = this.rendimientoAcademicoRepository
+      .createQueryBuilder('rendimiento')
+      .innerJoinAndSelect('rendimiento.id_carrera', 'carrera') // Usa 'id_carrera' en lugar de 'carrera'
+      .innerJoinAndSelect('carrera.id_facultad', 'facultad')   // Usa 'id_facultad' en lugar de 'facultad'
+      .select([
+        'carrera.nombre_carrera AS nombre_carrera',
+        'rendimiento.localidad AS localidad',
+        'rendimiento.periodo AS periodo',
+        'facultad.nombre_facultad AS nombre_facultad',
+        'rendimiento.ppa AS ppa',
+        'rendimiento.ppac AS ppac',
+        'rendimiento.ppa1 AS ppa1',
+        'rendimiento.pps AS pps',
+        'rendimiento.modalidad AS modalidad'
+      ]);
+  
+    // Aplicar filtros solo si el valor no es "Todas"
+    if (localidad !== 'Todas') {
+      query.andWhere('rendimiento.localidad = :localidad', { localidad });
+    }
+  
+    if (facultad !== 'Todas') {
+      query.andWhere('facultad.nombre_facultad = :facultad', { facultad });
+    }
+  
+    if (periodo !== 'Todas') {
+      query.andWhere('rendimiento.periodo = :periodo', { periodo });
+    }
+  
+    if (modalidad !== 'Todas') {
+      query.andWhere('rendimiento.modalidad = :modalidad', { modalidad });
+    }
+  
+    // Ejecutar la consulta y obtener los resultados
+    return query.getRawMany();
+  }
+  
+  
 }

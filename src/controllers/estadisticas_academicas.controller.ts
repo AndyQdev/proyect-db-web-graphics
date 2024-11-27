@@ -18,7 +18,7 @@ export class EstadisticasAcademicasController {
   //   return this.estadisticasAcademicasService.findOne(id);
   // }
 
-  // Crear una nueva estadística académica
+  // Crear una nueva estadística acaestadisticas-academicasdémica
   @Post()
   create(@Body() estadistica: EstadisticasAcademicas): Promise<EstadisticasAcademicas> {
     return this.estadisticasAcademicasService.create(estadistica);
@@ -43,14 +43,8 @@ export class EstadisticasAcademicasController {
     @Query('facultad') facultad: string,
     @Query('modalidad') modalidad: string,
   ): Promise<EstadisticasAcademicas[]> {
+    console.log('Hola desde el controlador', periodo, localidad)
     return this.estadisticasAcademicasService.filterEstadisticas(periodo, localidad, facultad, modalidad);
   }
-  @Get('filter2')
-  filterEstadisticas(
-    @Query('localidad') localidad: string,
-    @Query('facultad') facultad: string,
-    @Query('periodo') periodo: string
-  ): Promise<any[]> {
-    return this.estadisticasAcademicasService.filterEstadisticasAcademicas(localidad, facultad, periodo);
-  }
+
 }
